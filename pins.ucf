@@ -4,6 +4,10 @@ NET "clk" LOC = "B8";
 # Reset Button
 NET "btn_rst" LOC = "G12";
 
+# Pause Button (btn1)
+NET "btn_pause" LOC = "C11";
+
+
 # 74HC595 Pins (Same Pmod connector JA)
 NET "sclk" LOC = "B2";  # JA1
 NET "rclk" LOC = "A3";  # JA2

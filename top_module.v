@@ -1,6 +1,7 @@
 module top_module(
     input clk,
     input btn_rst,
+    input btn_pause,
     output sclk,
     output rclk,
     output dio,
@@ -18,6 +19,7 @@ module top_module(
     wire update_req;
     reg update_reg_latched;
     wire driver_busy;
+    reg running;
 
     // 1. Clock Divider
     clock_divider u_clk_div (
@@ -28,10 +30,14 @@ module top_module(
     );
 
     // 2. Counter (0000-9999)
+    // Gate the tick_count with running state
+    wire count_enable;
+    assign count_enable = tick_count & running;
+
     counter_4digit u_counter (
         .clk(clk),
         .rst(rst),
-        .tick_count(tick_count),
+        .tick_count(count_enable),
         .dig0(dig0),
         .dig1(dig1),
         .dig2(dig2),
@@ -47,6 +53,29 @@ module top_module(
         .shift_data(shift_data),
         .update_req(update_req)
     );
+
+    // 4. Pause Logic
+    wire btn_pause_clean; // Not used as wire output from debounce? wait, debounce has wire output
+    wire btn_pause_press;
+    
+    button_debounce u_btn_pause (
+        .clk(clk),
+        .btn_in(btn_pause),
+        .btn_state(), // We use the pulse
+        .btn_down(btn_pause_press)
+    );
+    
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            running <= 1; // Start running by default
+        end else begin
+            if (btn_pause_press) begin
+                running <= ~running;
+            end
+        end
+    end
+
 
     // 4. Driver Logic
     // Only start sending if driver is free and we have a request
