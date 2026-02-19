@@ -8,3 +8,7 @@ NET "btn_rst" LOC = "G12";
 NET "sclk" LOC = "B2";  # JA1
 NET "rclk" LOC = "A3";  # JA2
 NET "dio"  LOC = "J3";  # JA3
+
+# Buzzer (JB1 Header)
+NET "buzzer" LOC = "B5"; # Check your board pinout for JB1
+

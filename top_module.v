@@ -3,7 +3,8 @@ module top_module(
     input btn_rst,
     output sclk,
     output rclk,
-    output dio
+    output dio,
+    output buzzer
     );
 
     wire rst;
@@ -65,6 +66,14 @@ module top_module(
         .rclk(rclk),
         .dio(dio),
         .busy(driver_busy)
+    );
+
+    // 6. Alarm Module
+    alarm_module u_alarm (
+        .clk(clk),
+        .rst(rst),
+        .d0(dig0), .d1(dig1), .d2(dig2), .d3(dig3),
+        .buzzer(buzzer)
     );
 
 endmodule
