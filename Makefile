@@ -14,6 +14,8 @@ help:
 	@echo "      -> Git'i başlatır, dosyaları ekler ve uzak sunucuyu ayarlar."
 	@echo "  make push [MSG=\"Mesaj\"]"
 	@echo "      -> Değişiklikleri ekler, commit eder ve pushlar."
+	@echo "  make save-login"
+	@echo "      -> Kullanıcı adı/şifreyi bir kez sorup kaydeder."
 	@echo "  make clean"
 	@echo "      -> Xilinx/ISE tarafından oluşturulan gereksiz dosyaları temizler."
 
@@ -30,6 +32,11 @@ push:
 	git add .
 	-git commit -m $(MSG)
 	git push -u $(REMOTE) $(BRANCH)
+
+save-login:
+	git config credential.helper store
+	@echo "Şimdi 'make push' yapın. İlk seferde şifre soracak, sonrasında bir daha sormayacak."
+
 
 clean:
 	@echo "Gereksiz dosyalar temizleniyor..."
